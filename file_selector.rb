@@ -2,6 +2,8 @@
   file_selector.rb 
 
   Declares the FileSelector class
+
+  (c) 2017 Michoel Samuels
 =end
 
 class FileSelector

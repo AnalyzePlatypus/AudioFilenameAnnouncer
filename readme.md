@@ -35,7 +35,7 @@ Internal classes:
 
 * `SpokenFilenamePrepender` Wraps the whole process.
 
-* `SpokenFilenameMaker` creates the spoken filename audio file.
+* `TextToSpeechToolkit` creates the spoken filename audio file.
 
 * `FileJoiner` can merge audio files
 

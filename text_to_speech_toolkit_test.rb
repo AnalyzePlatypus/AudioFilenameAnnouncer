@@ -42,16 +42,14 @@ describe 'FilenameTextToSpeech' do
     end
 
 
-    it "should call the Speech class with the given string" do
+    it "should call `new` on the Speech class, with the given string" do
       test_string = 'Marsch Dabruvski.mp3'
       
       mock_speech_object = Minitest::Mock.new
       mock_speech_object.expect :save, nil, ['spoken_filename.mp3']
 
       mock_speech_class = Minitest::Mock.new
-      mock_speech_class.expect :new, mock_speech_object, [test_string] # Expect to be called with test_string
-
-      # The test
+      mock_speech_class.expect :new, mock_speech_object, [test_string] #<-- TEST HERE! 
 
       tts = TextToSpeechToolkit.new mock_speech_class
       tts.audio_file_from_string test_string 
@@ -64,19 +62,17 @@ describe 'FilenameTextToSpeech' do
       test_string = 'Marsch Dabruvski.mp3'
       
       mock_speech_object = Minitest::Mock.new
-      mock_speech_object.expect :save, nil, ['spoken_filename.mp3'] # <----- TEST!
+      mock_speech_object.expect :save, nil, ['spoken_filename.mp3'] # <----- TEST HERE!
 
       mock_speech_class = Minitest::Mock.new
-      mock_speech_class.expect :new, mock_speech_object, [test_string] # Expect to be called with test_string
+      mock_speech_class.expect :new, mock_speech_object, [test_string] 
 
       tts = TextToSpeechToolkit.new mock_speech_class
       tts.audio_file_from_string test_string 
 
       mock_speech_object.verify
     end
-
   end
-
 end
 
 

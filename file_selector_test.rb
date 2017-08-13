@@ -1,3 +1,11 @@
+=begin
+  file_selector_test.rb 
+
+  Tests for the FileSelector class
+
+  (c) 2017 Michoel Samuels
+=end
+
 require_relative 'file_selector'
 
 describe "FileSelector" do

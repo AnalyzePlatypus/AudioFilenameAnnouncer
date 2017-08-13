@@ -1,16 +1,9 @@
 =begin
-  spoken_filename_maker.rb 
+  text_to_speech_toolkit.rb 
 
+  Declares the TextToSpeechToolkit class
 
-tts = TextToSpeechToolkit.new
-
-filename = file
-spoken_filename_audio_file = speech.say_as_audio_file filename
-
-join_files spoken_filename_audio_file, orig
-
-
-  Declares the FilenameTextToSpeech class
+  (c) 2017 Michoel Samuels
 =end
 
 require 'espeak'
@@ -22,17 +15,20 @@ include ESpeak
 class TextToSpeechToolkit
   TEMP_FILENAME = 'spoken_filename.mp3'
 
+  # Create a new `TextToSpeechToolkit` object. Allows injecting the speech class for testing
   def initialize speech_class = Speech
     @speech_class = speech_class
   end
 
+  # Create an audio file
   def audio_file_from_string string
-    speech_object = make_speech_object(string).save TEMP_FILENAME
+    make_speech_object(string).save TEMP_FILENAME
     TEMP_FILENAME
   end
 
   private 
 
+  # Create a new instance of @speech_class, passing in `string``
   def make_speech_object string 
     @speech_class.new string
   end
