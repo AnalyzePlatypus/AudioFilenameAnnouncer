@@ -1,4 +1,3 @@
-require_relative 'test_dependencies'
 require_relative 'file_selector'
 
 describe "FileSelector" do
