@@ -11,7 +11,7 @@ require 'espeak'
 include ESpeak
 
 
-# Creates an audio file for 
+# A selection of text-to-speech utilities
 class TextToSpeechToolkit
   TEMP_FILENAME = 'spoken_filename.mp3'
 
