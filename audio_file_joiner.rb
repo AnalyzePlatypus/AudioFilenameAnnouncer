@@ -17,7 +17,8 @@ class AudioFileJoiner
   def concat file1, file2, output_filename 
     assert_file_exists file1
     assert_file_exists file2
-    #system "sox #{file1} #{file2} #{output_filename}"
+    command = create_sox_concat_command  file1, file2, output_filename 
+    run command
   end
 
   private 
@@ -32,5 +33,12 @@ class AudioFileJoiner
     @file_system.exist? file_path
   end
 
-  
+  def create_sox_concat_command  file1, file2, output_filename 
+    "sox #{file1} #{file2} #{output_filename}"
+  end
+
+  def run string 
+    system string
+  end
+
 end

@@ -13,6 +13,8 @@ describe 'AudioFileJoiner' do
     assert defined? AudioFileJoiner
   end
 
+  # -------------------
+
   describe ':prepend_to_file method' do 
     before do
       @joiner = AudioFileJoiner.new
@@ -28,6 +30,8 @@ describe 'AudioFileJoiner' do
       @joiner.prepend_to_file '', ''
     end
   end
+
+  # -------------------
 
   describe ':concat method' do 
     before do
@@ -60,6 +64,7 @@ describe 'AudioFileJoiner' do
     end
   end
 
+  # -------------------
 
   describe '`assert_file_exists` method' do
     before do
@@ -83,6 +88,42 @@ describe 'AudioFileJoiner' do
       assert joiner.send :file_exists?, real_file_path
       refute joiner.send :file_exists?, fake_file_path
       @fake_file_class.verify
+    end
+  end
+
+  # -------------------
+
+  describe ':create_sox_concat_command method' do 
+    before do
+      @joiner = AudioFileJoiner.new
+    end
+
+    it "should be defined" do
+      @joiner.send :create_sox_concat_command, '', '', ''
+    end
+
+    it "should create a string with format `sox arg1 arg2 arg3`" do
+      args = %w(larry curly moe)
+      expected_string = "sox #{args[0]} #{args[1]} #{args[2]}"
+      generated_string = @joiner.send :create_sox_concat_command, args[0], args[1], args[2]
+      assert_equal expected_string, generated_string
+    end
+  end
+
+  # -------------------
+
+  describe ':run method' do
+    before do
+      @joiner = AudioFileJoiner.new
+    end
+
+    it "should be defined" do
+      @joiner.send :run, ''
+    end
+
+    it "should run the given string on the system command line" do
+      assert @joiner.send :run, 'echo'
+      refute @joiner.send :run, 'blah'
     end
   end
 
