@@ -16,7 +16,7 @@ class FileSelector
 
   def select_mp3
     all_files = select_all_files
-    all_files.select {|filename| filename.include? ".mp3"}
+    all_files.select {|filename| filename =~ /.mp3/}
   end
 
   def select_all_files

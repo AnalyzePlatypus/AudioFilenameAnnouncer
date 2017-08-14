@@ -18,7 +18,7 @@ class AudioFileJoiner
     assert_file_exists file1
     assert_file_exists file2
     command = create_sox_concat_command  file1, file2, output_filename 
-    run command
+    #run command
   end
 
   private 
