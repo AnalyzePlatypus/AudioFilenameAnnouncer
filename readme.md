@@ -6,10 +6,8 @@
 
 UNDER DEVELOPMENT - ALPHA
 
-Remember the iPod Shuffle (RIP)?
-
-`AudioFilenameAnnouncer` is a Ruby script that reads the filename aloud at the start of an mp3 file.
-
+Remember the iPod Shuffle (RIP)? 
+This script prepends audio files with a spoken announcement of their filename for hand-free use. Great for listening on digital recorders, primitive mp3 players, and displayless devices.
 
 ## Usage
 
