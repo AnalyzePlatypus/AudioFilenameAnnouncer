@@ -1,4 +1,8 @@
 # AudioFilenameAnnouncer
+[![Build Status](https://travis-ci.org/AnalyzePlatypus/AudioFilenameAnnouncer.svg?branch=master)](https://travis-ci.org/AnalyzePlatypus/AudioFilenameAnnouncer)
+[![Coverage Status](https://coveralls.io/repos/github/AnalyzePlatypus/AudioFilenameAnnouncer/badge.svg?branch=master)](https://coveralls.io/github/AnalyzePlatypus/AudioFilenameAnnouncer?branch=master)
+[![Inline docs](http://inch-ci.org/github/AnalyzePlatypus/TranslitKit.svg?branch=master)](https://inch-ci.org/github/AnalyzePlatypus/AudioFilenameAnnouncer.svg?branch=master)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/AnalyzePlatypus/AudioFilenameAnnouncer/blob/master/LICENSE.txt)
 
 UNDER DEVELOPMENT - ALPHA
 
