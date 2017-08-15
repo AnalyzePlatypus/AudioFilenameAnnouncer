@@ -6,7 +6,7 @@
   (c) 2017 Michoel Samuels
 =end
 
-require_relative 'file_selector'
+require 'test_helper'
 
 describe "FileSelector" do
 

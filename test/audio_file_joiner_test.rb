@@ -6,7 +6,7 @@
   (c) 2017 Michoel Samuels
 =end
 
-require_relative 'audio_file_joiner'
+require 'test_helper'
 
 describe 'AudioFileJoiner' do
   it "should be defined" do

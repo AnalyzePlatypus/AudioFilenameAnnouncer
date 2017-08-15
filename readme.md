@@ -37,7 +37,8 @@ Audio processing and mp3 encoding provided by [sox](http://sox.sourceforge.net) 
 
 ## Requirements
 
-`brew install lame sox espeak`
+`brew install sox --with-lame`
+`brew install espeak`
 
 ## Contributing
 

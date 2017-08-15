@@ -5,3 +5,5 @@
 
   (c) 2017 Michoel Samuels
 =end
+
+require "AudioFilenameAnnouncer/version"

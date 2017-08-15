@@ -6,9 +6,9 @@
   (c) 2017 Michoel Samuels
 =end
 
-require_relative 'text_to_speech_toolkit'
+require 'test_helper'
 
-describe 'FilenameTextToSpeech' do 
+describe 'TextToSpeechToolkit' do 
   before do 
     @tts = TextToSpeechToolkit.new
   end
