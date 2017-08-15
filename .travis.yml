@@ -2,5 +2,5 @@ language: ruby
 rvm: 2.2
 
 before_install:
-  - sudo apt-get sox
-  - sudo apt-get espeak
+  - sudo apt-get install sox
+  - sudo apt-get install espeak
