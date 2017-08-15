@@ -15,24 +15,6 @@ describe 'AudioFileJoiner' do
 
   # -------------------
 
-  describe ':prepend_to_file method' do 
-    before do
-      @joiner = AudioFileJoiner.new
-    end
-
-    it "should be defined" do
-      assert_respond_to @joiner, :prepend_to_file
-    end
-
-    it "should require 2 args" do
-      assert_raises (ArgumentError) { @joiner.prepend_to_file }
-      assert_raises (ArgumentError) { @joiner.prepend_to_file '' }
-      @joiner.prepend_to_file '', ''
-    end
-  end
-
-  # -------------------
-
   describe '`assert_file_exists` method' do
     before do
       @fake_file_class = Minitest::Mock.new
@@ -60,19 +42,19 @@ describe 'AudioFileJoiner' do
 
   # -------------------
 
-  describe ':create_sox_concat_command method' do 
+  describe ':sox_concat_command method' do 
     before do
       @joiner = AudioFileJoiner.new
     end
 
     it "should be defined" do
-      @joiner.send :create_sox_concat_command, '', '', ''
+      @joiner.send :sox_concat_command, '', '', ''
     end
 
     it "should create a string with format `sox arg1 arg2 arg3`" do
       args = %w(larry curly moe)
       expected_string = "sox #{args[0]} #{args[1]} #{args[2]}"
-      generated_string = @joiner.send :create_sox_concat_command, args[0], args[1], args[2]
+      generated_string = @joiner.send :sox_concat_command, args[0], args[1], args[2]
       assert_equal expected_string, generated_string
     end
   end
@@ -110,6 +92,8 @@ describe 'AudioFileJoiner' do
       @fake_file_system.expect :exist?, true, [files[0]]
       @fake_file_system.expect :exist?, true, [files[1]]
       
+      # THE ACTUAL TEST
+
       @fake_command_line_instance.expect :run, true, ["sox #{files[0]} #{files[1]} #{output_filename}"]
       
       @joiner.concat files[0], files[1], output_filename
@@ -117,4 +101,44 @@ describe 'AudioFileJoiner' do
       @fake_command_line_instance.verify
     end
   end
+
+  #------------------
+
+  describe ":prepend_to_file method" do
+    before do
+      @joiner = AudioFileJoiner.new
+    end
+
+    it "should be defined" do
+      assert_respond_to @joiner, :prepend_to_file
+    end
+
+    it "should generate the correct sox command" do
+      @fake_command_line_class = Minitest::Mock.new
+      @fake_command_line_instance = Minitest::Mock.new
+      @fake_command_line_class.expect :new, @fake_command_line_instance
+      
+      @fake_file_system = Minitest::Mock.new
+      
+      # Create a new joiner with mock objects
+      @joiner = AudioFileJoiner.new @fake_file_system, @fake_command_line_class
+
+      main_file = 'main.mp3'
+      prefix_file = 'prefix.mp3'
+      
+      # Bypass file exists check
+      @fake_file_system.expect :exist?, true, [main_file]
+      @fake_file_system.expect :exist?, true, [prefix_file]
+      
+      
+      # THE ACTUAL TEST
+
+      @fake_command_line_instance.expect :run, true, ["sox #{prefix_file} #{main_file} #{main_file}"]
+      
+      @joiner.prepend_to_file main_file, prefix_file
+
+      @fake_command_line_instance.verify
+    end
+
+  end  
 end

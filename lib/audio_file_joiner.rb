@@ -14,17 +14,23 @@ class AudioFileJoiner
     @command_line_runner = command_line_runner.new 
   end
 
-  def prepend_to_file file, file_to_prepend
+  def prepend_to_file file, prefix_file
+    assert_files_exist [file, prefix_file]
+    command = sox_concat_command prefix_file, file, file
+    run command
   end
 
   def concat file1, file2, output_filename 
-    assert_file_exists file1
-    assert_file_exists file2
-    command = create_sox_concat_command  file1, file2, output_filename 
+    assert_files_exist [file1, file2]
+    command = sox_concat_command  file1, file2, output_filename 
     run command
   end
 
   private 
+
+  def assert_files_exist files
+    files.each {|f| assert_file_exists f}
+  end
 
   def assert_file_exists file_path 
     unless file_exists? file_path 
@@ -36,12 +42,11 @@ class AudioFileJoiner
     @file_system.exist? file_path
   end
 
-  def create_sox_concat_command  file1, file2, output_filename 
+  def sox_concat_command  file1, file2, output_filename 
     "sox #{file1} #{file2} #{output_filename}"
   end
 
   def run command
     @command_line_runner.run command
   end
-
 end
