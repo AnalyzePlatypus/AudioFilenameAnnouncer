@@ -1,6 +1,11 @@
 # AudioFilenameAnnouncer
 
-`AudioFilenameAnnouncer` is a Ruby script that prepends the spoken filename to a mp3 file.
+UNDER DEVELOPMENT - ALPHA
+
+Remember the iPod Shuffle (RIP)?
+
+`AudioFilenameAnnouncer` is a Ruby script that reads the filename aloud at the start of an mp3 file.
+
 
 ## Usage
 
@@ -24,7 +29,19 @@ AudioFilenameAnnouncer.process directory
 # [2/14] file_2.mp3 ... done
 # ...etc.
 ```
+## Credits
 
-## Architecture
+Speech synthesis provided by [espeak-ruby](https://github.com/dejan/espeak-ruby).
 
-See ARCHITECTURE.md
+Audio processing and mp3 encoding provided by [sox](http://sox.sourceforge.net) and [LAME](http://lame.sourceforge.net)
+
+## Requirements
+
+`brew install lame sox espeak`
+
+## Contributing
+
+Currently maintained by [@AnalyzePlatypus](https://github.com/AnalyzePlatypus/).
+Contributions are welcome!
+
+See [ARCHITECTURE.md](https://github.com/AnalyzePlatypus/AudioFilenameAnnouncer/blob/master/architecture.md)
