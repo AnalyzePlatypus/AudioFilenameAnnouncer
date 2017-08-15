@@ -217,5 +217,6 @@ describe 'AudioFileJoiner' do
     end
   end
 
-  describe ":rename_file"
+  describe ":rename_file" do
+  end
 end
