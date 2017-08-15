@@ -33,39 +33,6 @@ describe 'AudioFileJoiner' do
 
   # -------------------
 
-  describe ':concat method' do 
-    before do
-      @joiner = AudioFileJoiner.new
-    end
-
-    it "should be defined" do
-      assert_respond_to @joiner, :concat
-    end
-
-    it "should require 3 args" do
-      # Cruft to mock out the file system so we don't have to pass actual files to `#concat`
-      @fake_file_class = Minitest::Mock.new
-      FILE_EXIST_WILL_BE_CALLED_COUNT = 6
-      FILE_EXIST_WILL_BE_CALLED_COUNT.times do 
-        # Allow File#exist? to be called `FILE_EXIST_WILL_BE_CALLED_COUNT` times
-        @fake_file_class.expect :exist?, true, ['']  
-      end
-      joiner = AudioFileJoiner.new @fake_file_class
-
-      # Actual tests
-      assert_raises (ArgumentError) {joiner.concat}
-      assert_raises (ArgumentError) {joiner.concat ''}
-      assert_raises (ArgumentError) {joiner.concat '', ''}
-      joiner.concat '', '', ''
-    end
-
-    it "should require all args to contain a file extension (.)" do
-      assert_raises (ArgumentError) {@joiner.concat 'noext', 'no_extension', 'none here'}
-    end
-  end
-
-  # -------------------
-
   describe '`assert_file_exists` method' do
     before do
       @fake_file_class = Minitest::Mock.new
@@ -112,19 +79,42 @@ describe 'AudioFileJoiner' do
 
   # -------------------
 
-  describe ':run method' do
+  describe ":concat method" do
+
     before do
       @joiner = AudioFileJoiner.new
     end
 
     it "should be defined" do
-      @joiner.send :run, ''
+      assert @joiner.respond_to? :concat
     end
 
-    it "should run the given string on the system command line" do
-      assert @joiner.send :run, 'echo'
-      refute @joiner.send :run, 'blah'
+    it "should require all args to contain a file extension (.)" do
+      assert_raises (ArgumentError) {@joiner.concat 'noext', 'no_extension', 'none here'}
+    end
+
+    it "should generate and pass the correct command string to the command line" do
+      @fake_command_line_class = Minitest::Mock.new
+      @fake_command_line_instance = Minitest::Mock.new
+      @fake_command_line_class.expect :new, @fake_command_line_instance
+      
+      @fake_file_system = Minitest::Mock.new
+      
+      # Create a new joiner with mock objects
+      @joiner = AudioFileJoiner.new @fake_file_system, @fake_command_line_class
+
+      files = %w(file1.mp3 file2.mp3)
+      output_filename = "output.mp3"
+
+      # Bypass file exists check
+      @fake_file_system.expect :exist?, true, [files[0]]
+      @fake_file_system.expect :exist?, true, [files[1]]
+      
+      @fake_command_line_instance.expect :run, true, ["sox #{files[0]} #{files[1]} #{output_filename}"]
+      
+      @joiner.concat files[0], files[1], output_filename
+
+      @fake_command_line_instance.verify
     end
   end
-
 end

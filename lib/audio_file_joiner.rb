@@ -6,9 +6,12 @@
   (c) 2017 Michoel Samuels
 =end
 
+require 'command_line_runner'
+
 class AudioFileJoiner
-  def initialize file_class = File
+  def initialize file_class = File, command_line_runner = CommandLineRunner
     @file_system = file_class
+    @command_line_runner = command_line_runner.new 
   end
 
   def prepend_to_file file, file_to_prepend
@@ -18,7 +21,7 @@ class AudioFileJoiner
     assert_file_exists file1
     assert_file_exists file2
     command = create_sox_concat_command  file1, file2, output_filename 
-    #run command
+    run command
   end
 
   private 
@@ -37,8 +40,8 @@ class AudioFileJoiner
     "sox #{file1} #{file2} #{output_filename}"
   end
 
-  def run string 
-    system string
+  def run command
+    @command_line_runner.run command
   end
 
 end
