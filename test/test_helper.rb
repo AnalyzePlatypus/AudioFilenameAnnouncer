@@ -14,7 +14,7 @@ SimpleCov.start
 
 # Enable Coveralls test coverage tester
 require 'coveralls'
-#Coveralls.wear!
+Coveralls.wear!
 
 require "minitest/autorun"
 require 'minitest/color'

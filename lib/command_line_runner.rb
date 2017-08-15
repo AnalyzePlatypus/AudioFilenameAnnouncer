@@ -8,8 +8,10 @@
 
 # Runs 
 class CommandLineRunner
-  # Run `command` on the command line
-  def run command
+  
+  # Runs `command` on the command line
+  def CommandLineRunner.run command
     system command
   end
+  
 end

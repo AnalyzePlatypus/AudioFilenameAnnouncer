@@ -17,17 +17,23 @@ class AudioFileJoiner
 
   # Create a new AudioFileJoiner.
   # Allows injecting alternate File and CommandLineRunner classes for testing
-  def initialize file_class = File, command_line_runner = CommandLineRunner
-    @file_system = file_class
-    @command_line_runner = command_line_runner.new 
+  def initialize file_class = File, command_line_runner = CommandLineRunner, file_utils = FileUtils
+    @file_system = file_class 
+    @command_line_runner = command_line_runner
+    @file_utils = file_utils 
   end
 
   # Prepend `prefix_file` to `file`.
   # `file` is destructively altered.
-  def prepend_to_file file, prefix_file
-    assert_files_exist [file, prefix_file]
-    command = sox_concat_command prefix_file, file, file
-    run command
+  def prepend_to_file main_file, prefix_file
+    assert_files_exist [main_file, prefix_file]
+    
+    output_dir = determine_directory main_file
+    
+    output_file = "#{output_dir}/tmp_output.mp3"
+    
+    run sox_concat_command prefix_file, main_file, output_file
+    overwrite_file main_file, output_file
   end
 
   # Concatenate `file1` and `file2`, and write the output to `output_filename`
@@ -65,5 +71,13 @@ class AudioFileJoiner
   # Run `command` on the command line
   def run command
     @command_line_runner.run command
+  end
+
+  def determine_directory path
+    @file_system.dirname path
+  end
+
+  def overwrite_file old_file, new_file
+    @file_utils.mv new_file, old_file
   end
 end

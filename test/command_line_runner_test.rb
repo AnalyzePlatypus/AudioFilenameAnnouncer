@@ -15,7 +15,7 @@ describe 'CommandLineRunner' do
 
   describe ':run method' do
     before do
-      @joiner = CommandLineRunner.new
+      @joiner = CommandLineRunner
     end
 
     it "should be defined" do
