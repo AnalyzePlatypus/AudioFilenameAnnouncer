@@ -128,7 +128,9 @@ describe 'AudioFileJoiner' do
       @fake_file_system.expect :exist?, true, [main_file]
       @fake_file_system.expect :exist?, true, [prefix_file]
       @fake_file_system.expect :dirname, File.dirname(main_file), [main_file]
+      @fake_file_system.expect :rename, true, [output_file, main_file]
       @fake_file_utils.expect :mv, true, [output_file, main_file]
+
 
       # THE ACTUAL TEST
 
@@ -142,9 +144,6 @@ describe 'AudioFileJoiner' do
       @fake_command_line = Minitest::Mock.new
       @fake_file_utils = Minitest::Mock.new
       
-      # Create a new joiner with mock objects
-      @joiner = AudioFileJoiner.new @fake_file_system, @fake_command_line, @fake_file_utils
-
       main_file = 'fred/main.mp3'
       prefix_file = 'fred/prefix.mp3'
       output_file = 'fred/tmp_output.mp3'
@@ -153,10 +152,15 @@ describe 'AudioFileJoiner' do
       @fake_file_system.expect :exist?, true, [main_file]
       @fake_file_system.expect :exist?, true, [prefix_file]
       @fake_file_system.expect :dirname, File.dirname(main_file), [main_file]
+      @fake_file_system.expect :rename, true, [output_file, main_file]
       @fake_command_line.expect :run, true, ["sox #{prefix_file} #{main_file} #{output_file}"]
       
+
       # THE TEST
       @fake_file_utils.expect :mv, true, [output_file, main_file]
+
+      # Create a new joiner with mock objects
+      @joiner = AudioFileJoiner.new @fake_file_system, @fake_command_line, @fake_file_utils
 
       @joiner.prepend_to_file main_file, prefix_file
       @fake_file_utils.verify
@@ -202,7 +206,7 @@ describe 'AudioFileJoiner' do
       assert @joiner.respond_to? :overwrite_file, true
     end
 
-    it "should FileUtils#mv to do the heavy lifting" do
+    it "should call FileUtils#mv to do the heavy lifting" do
       new_file = 'new_file'
       old_file = 'old_file'
       
@@ -218,5 +222,27 @@ describe 'AudioFileJoiner' do
   end
 
   describe ":rename_file" do
+    before do
+      @joiner = AudioFileJoiner.new
+    end
+
+    it "should be defined" do
+      assert @joiner.respond_to? :rename_file, true
+    end
+
+    it "should call File#rename" do
+      old_name = 'path/to/old'
+      new_name = 'path/to/new'
+      
+      @fake_file_system = Minitest::Mock.
+        new.
+        expect :rename, true, [old_name, new_name]
+      
+      AudioFileJoiner.
+        new(@fake_file_system).
+        send :rename_file, old_name, new_name
+
+      @fake_file_system.verify
+    end
   end
 end

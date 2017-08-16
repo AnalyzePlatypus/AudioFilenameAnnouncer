@@ -16,7 +16,7 @@ require 'command_line_runner'
 class AudioFileJoiner
 
   # Create a new AudioFileJoiner.
-  # Allows injecting alternate File and CommandLineRunner classes for testing
+  # Allows injecting classes for testing
   def initialize file_class = File, command_line_runner = CommandLineRunner, file_utils = FileUtils
     @file_system = file_class 
     @command_line_runner = command_line_runner
@@ -27,12 +27,12 @@ class AudioFileJoiner
   # `file` is destructively altered.
   def prepend_to_file main_file, prefix_file
     assert_files_exist [main_file, prefix_file]
-    
+
     output_dir = determine_directory main_file
-    
+
     output_file = "#{output_dir}/tmp_output.mp3"
-    
-    run sox_concat_command prefix_file, main_file, output_file
+
+    run  sox_concat_command prefix_file, main_file, output_file
     overwrite_file main_file, output_file
   end
 
@@ -54,7 +54,7 @@ class AudioFileJoiner
   # Raise an exception if `file` cannot be found
   def assert_file_exists file 
     unless file_exists? file 
-      raise ArgumentError.new "Could not find file `#{file}`: No such file or directory" 
+      raise ArgumentError.new "❌ Could not find file `#{file}`: No such file or directory" 
     end
   end
 
@@ -79,5 +79,9 @@ class AudioFileJoiner
 
   def overwrite_file old_file, new_file
     @file_utils.mv new_file, old_file
+  end
+
+  def rename_file old_name, new_name
+    @file_system.rename old_name, new_name
   end
 end
