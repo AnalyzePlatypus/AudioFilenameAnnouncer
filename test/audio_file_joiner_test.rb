@@ -15,33 +15,6 @@ describe 'AudioFileJoiner' do
 
   # -------------------
 
-  describe '`assert_file_exists` method' do
-    before do
-      @fake_file_class = Minitest::Mock.new
-    end
-
-    it "should exist" do
-      joiner = AudioFileJoiner.new 
-      joiner.send :file_exists?, ''
-    end
-
-    it "should detect if the file exists" do
-      real_file_path = 'path/to/real'
-      @fake_file_class.expect :exist?, true, [real_file_path]
-      
-      fake_file_path = 'path/to/fake'
-      @fake_file_class.expect :exist?, false, [fake_file_path]
-      
-      joiner = AudioFileJoiner.new @fake_file_class
-      
-      assert joiner.send :file_exists?, real_file_path
-      refute joiner.send :file_exists?, fake_file_path
-      @fake_file_class.verify
-    end
-  end
-
-  # -------------------
-
   describe ':sox_concat_command method' do 
     before do
       @joiner = AudioFileJoiner.new
@@ -71,10 +44,6 @@ describe 'AudioFileJoiner' do
       assert @joiner.respond_to? :concat
     end
 
-    it "should require all args to contain a file extension (.)" do
-      assert_raises (ArgumentError) {@joiner.concat 'noext', 'no_extension', 'none here'}
-    end
-
     it "should generate and pass the correct command string to the command line" do
       @fake_command_line = Minitest::Mock.new
       
@@ -85,10 +54,6 @@ describe 'AudioFileJoiner' do
 
       files = %w(file1.mp3 file2.mp3)
       output_filename = "output.mp3"
-
-      # Bypass file exists check
-      @fake_file_system.expect :exist?, true, [files[0]]
-      @fake_file_system.expect :exist?, true, [files[1]]
       
       # THE ACTUAL TEST
 
@@ -124,13 +89,8 @@ describe 'AudioFileJoiner' do
       prefix_file = 'fred/prefix.mp3'
       output_file = 'fred/tmp_output.mp3'
 
-      # Bypass file exists check
-      @fake_file_system.expect :exist?, true, [main_file]
-      @fake_file_system.expect :exist?, true, [prefix_file]
       @fake_file_system.expect :dirname, File.dirname(main_file), [main_file]
-      @fake_file_system.expect :rename, true, [output_file, main_file]
       @fake_file_utils.expect :mv, true, [output_file, main_file]
-
 
       # THE ACTUAL TEST
 
@@ -149,13 +109,10 @@ describe 'AudioFileJoiner' do
       output_file = 'fred/tmp_output.mp3'
 
       # Bypass file exists check
-      @fake_file_system.expect :exist?, true, [main_file]
-      @fake_file_system.expect :exist?, true, [prefix_file]
       @fake_file_system.expect :dirname, File.dirname(main_file), [main_file]
       @fake_file_system.expect :rename, true, [output_file, main_file]
       @fake_command_line.expect :run, true, ["sox #{prefix_file} #{main_file} #{output_file}"]
       
-
       # THE TEST
       @fake_file_utils.expect :mv, true, [output_file, main_file]
 
@@ -166,6 +123,8 @@ describe 'AudioFileJoiner' do
       @fake_file_utils.verify
     end
   end  
+
+  # -----------------
 
   describe ":determine_directory method" do
     before do
@@ -197,6 +156,8 @@ describe 'AudioFileJoiner' do
     end
   end
 
+  # ------------------
+
   describe ":overwrite_file method" do
     before do
       @joiner = AudioFileJoiner.new
@@ -221,28 +182,6 @@ describe 'AudioFileJoiner' do
     end
   end
 
-  describe ":rename_file" do
-    before do
-      @joiner = AudioFileJoiner.new
-    end
+  # -------------------
 
-    it "should be defined" do
-      assert @joiner.respond_to? :rename_file, true
-    end
-
-    it "should call File#rename" do
-      old_name = 'path/to/old'
-      new_name = 'path/to/new'
-      
-      @fake_file_system = Minitest::Mock.
-        new.
-        expect :rename, true, [old_name, new_name]
-      
-      AudioFileJoiner.
-        new(@fake_file_system).
-        send :rename_file, old_name, new_name
-
-      @fake_file_system.verify
-    end
-  end
 end
