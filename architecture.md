@@ -3,7 +3,7 @@
 **`AudioFilenameAnnouncer`** exposes the public `AudioFilenameAnnouncer` class.
 This is the only class users iteract with.
 
-The actual work is performed by several entirely independent classes the closely follow the [Single Responsibility Principle](https://en.wikipedia.org/wiki/Single_responsibility_principle).
+The actual work is performed by several entirely independent classes that closely follow the [Single Responsibility Principle](https://en.wikipedia.org/wiki/Single_responsibility_principle).
 
 
 Internal classes:
