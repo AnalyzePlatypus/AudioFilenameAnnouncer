@@ -5,8 +5,6 @@
 [![Inline docs](http://inch-ci.org/github/AnalyzePlatypus/TranslitKit.svg?branch=master)](https://inch-ci.org/github/AnalyzePlatypus/AudioFilenameAnnouncer?branch=master)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/AnalyzePlatypus/AudioFilenameAnnouncer/blob/master/LICENSE.txt)
 
-UNDER DEVELOPMENT - ALPHA
-
 Remember the iPod Shuffle (RIP)? 
 This script prepends audio files with a spoken announcement of their filename for hand-free use. Great for listening on digital recorders, primitive mp3 players, and displayless devices.
 
